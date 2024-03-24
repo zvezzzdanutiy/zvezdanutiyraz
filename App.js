@@ -10,8 +10,18 @@ const Home = () => {
   const [response, setResponse] = useState();
   const [refresh, setRefresh] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  let botToken;
 
-
+(async () => {
+  try {
+    const response = await axios.get('https://bba8v1il8ebk39vnaqcv.containers.yandexcloud.net/token');
+    botToken = response.data;
+    console.log(botToken);
+    // Здесь можно выполнять дополнительные действия с botToken
+  } catch (error) {
+    console.error(error);
+  }
+})();
   const storeData = async (value) => {
     try {
       const jsonValue = JSON.stringify(value);
@@ -21,9 +31,7 @@ const Home = () => {
   };
   const sendJokeToTelegram = async (joke) => {
     try {
-      const chatId = response.id; // Замените на ваш Chat ID
-      const botToken = '7122476551:AAGRldhloWEs-_jWsEkOTMZEsXhGE0dbXWQ'; // Замените на ваш токен бота
-    
+      const chatId = response.id; // 
       const url = `https://api.telegram.org/bot${botToken}/sendMessage`;
       const data = {
         chat_id: chatId,
@@ -45,8 +53,9 @@ const Home = () => {
   };
   
   const sendTelegramDataToServer = async (response) => {
+    let success = false;
     try {
-      const url = 'https://bbaldqubvaic1trdub8i.containers.yandexcloud.net/auth';
+      const url = 'https://bba8v1il8ebk39vnaqcv.containers.yandexcloud.net/auth';
       const data = {
         id: response.id,
         first_name: response.first_name,
@@ -59,6 +68,7 @@ const Home = () => {
   
       await axios.post(url, data);
       console.log('Данные отправлены на сервер');
+      success = true;     
   
       // Проверка результата на сервере
       const result = await checkResult(response);
@@ -66,15 +76,21 @@ const Home = () => {
   
       // Перенаправление на главную страницу, если результат равен false
       if (!result) {
-        Linking.openURL('https://zvezdanutiyustal.netlify.app/'); 
+        Linking.openURL('https://zvezdanutiyraz.netlify.app/'); 
       }
     } catch (error) {
       console.error('Ошибка при отправке данных на сервер:', error);
     }
+    if (!success) {
+      // Если данные не отправились на сервер, перенаправляем пользователя на страницу авторизации
+      setIsLoggedIn(false);
+      setRefresh(false); // сбрасываем значение refresh
+      setResponse(null); // сбрасываем значение response
+    }
   };
   const checkResult = async (response) => {
     try {
-      const url = 'https://bbaldqubvaic1trdub8i.containers.yandexcloud.net/auth';
+      const url = 'https://bba8v1il8ebk39vnaqcv.containers.yandexcloud.net/auth';
       const result = await axios.post(url, response);
       console.log('Результат проверки:', result.data);
   
