@@ -76,7 +76,7 @@ const Home = () => {
   
       // Перенаправление на главную страницу, если результат равен false
       if (!result) {
-        Linking.openURL('https://zvezdanutiyraz.netlify.app/'); 
+        Linking.openURL('https://zvezdanutiydva.netlify.app/'); 
       }
     } catch (error) {
       console.error('Ошибка при отправке данных на сервер:', error);
@@ -110,9 +110,9 @@ const Home = () => {
           'Authorization': encodeURIComponent(object)
         }
       };
-      let url = 'https://bba8v1il8ebk39vnaqcv.containers.yandexcloud.net/anekdot';
+      let url = 'https://bba878ml8a3u9vp5cpug.containers.yandexcloud.net/anekdot';
       if (refresh) {
-        url = 'https://bba8v1il8ebk39vnaqcv.containers.yandexcloud.net/anekdot';
+        url = 'https://bba878ml8a3u9vp5cpug.containers.yandexcloud.net/anekdot';
       }
       const response = await axios.get(url, config);
       console.log(response.data.Text);
