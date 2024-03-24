@@ -16,7 +16,6 @@ const Home = () => {
   try {
     const response = await axios.get('https://bba8v1il8ebk39vnaqcv.containers.yandexcloud.net/token');
     botToken = response.data;
-    console.log(botToken);
     // Здесь можно выполнять дополнительные действия с botToken
   } catch (error) {
     console.error(error);
@@ -76,7 +75,7 @@ const Home = () => {
   
       // Перенаправление на главную страницу, если результат равен false
       if (!result) {
-        Linking.openURL('https://zvezdanutiydva.netlify.app/'); 
+        Linking.openURL('https://zvezdanutiytri.netlify.app/'); 
       }
     } catch (error) {
       console.error('Ошибка при отправке данных на сервер:', error);
