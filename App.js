@@ -10,6 +10,7 @@ const Home = () => {
   const [response, setResponse] = useState();
   const [refresh, setRefresh] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [send, setSend] = useState(false);
   let botToken;
 
 (async () => {
@@ -50,7 +51,6 @@ const Home = () => {
     setIsLoggedIn(true);
     await sendTelegramDataToServer(response);
   };
-  
   const sendTelegramDataToServer = async (response) => {
     let success = false;
     try {
@@ -67,7 +67,7 @@ const Home = () => {
   
       await axios.post(url, data);
       console.log('Данные отправлены на сервер');
-      success = true;     
+      success = true;   
   
       // Проверка результата на сервере
       const result = await checkResult(response);
@@ -75,7 +75,7 @@ const Home = () => {
   
       // Перенаправление на главную страницу, если результат равен false
       if (!result) {
-        Linking.openURL('https://zvezdanutiytri.netlify.app/'); 
+        Linking.openURL('https://zvezdanutiylast.netlify.app/'); 
       }
     } catch (error) {
       console.error('Ошибка при отправке данных на сервер:', error);
@@ -120,12 +120,15 @@ const Home = () => {
       console.error(error);
     }
   };
+
   const handleRefresh = (value) => {
-    console.log(response)
+    console.log(response);
     setRefresh(value);
-    sendJokeToTelegram(joke);
-    
-  };  
+    if (send === true) {
+      sendJokeToTelegram(joke);
+    }
+    setSend(true);
+  };
 
   useEffect(() => {
     if (refresh) {
