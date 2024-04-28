@@ -12,10 +12,9 @@ const Home = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [send, setSend] = useState(false);
   let botToken;
-
 (async () => {
   try {
-    const response = await axios.get('https://bba8v1il8ebk39vnaqcv.containers.yandexcloud.net/token');
+    const response = await axios.get('https://bbaaj2g0k9dcmm6ebmo7.containers.yandexcloud.net/token');
     botToken = response.data;
     // Здесь можно выполнять дополнительные действия с botToken
   } catch (error) {
@@ -29,19 +28,20 @@ const Home = () => {
     } catch (e) {
     }
   };
-  const sendJokeToTelegram = async (joke) => {
+  const sendJokeToBackend = async (joke) => {
     try {
-      const chatId = response.id; // 
-      const url = `https://api.telegram.org/bot${botToken}/sendMessage`;
+      const chatId = response.id;
+      const url = 'https://bbaaj2g0k9dcmm6ebmo7.containers.yandexcloud.net/send-joke';
       const data = {
         chat_id: chatId,
-        text: joke,
+        joke: joke,
       };
     
       await axios.post(url, data);
-      console.log('Анекдот отправлен в бота');
+      console.log('Анекдот отправлен на бэкенд');
+      console.log('Received joke:', joke, 'for chat ID:', chatId);
     } catch (error) {
-      console.error('Ошибка при отправке анекдота в бота:', error);
+      console.error('Ошибка при отправке анекдота на бэкенд:', error);
     }
   };
   
@@ -54,7 +54,7 @@ const Home = () => {
   const sendTelegramDataToServer = async (response) => {
     let success = false;
     try {
-      const url = 'https://bba8v1il8ebk39vnaqcv.containers.yandexcloud.net/auth';
+      const url = 'https://bbaaj2g0k9dcmm6ebmo7.containers.yandexcloud.net/auth';
       const data = {
         id: response.id,
         first_name: response.first_name,
@@ -75,7 +75,7 @@ const Home = () => {
   
       // Перенаправление на главную страницу, если результат равен false
       if (!result) {
-        Linking.openURL('https://zvezdanutiylast.netlify.app/'); 
+        Linking.openURL('https://zvezdanutiyfix.netlify.app');
       }
     } catch (error) {
       console.error('Ошибка при отправке данных на сервер:', error);
@@ -89,7 +89,7 @@ const Home = () => {
   };
   const checkResult = async (response) => {
     try {
-      const url = 'https://bba8v1il8ebk39vnaqcv.containers.yandexcloud.net/auth';
+      const url = 'https://bbaaj2g0k9dcmm6ebmo7.containers.yandexcloud.net/auth';
       const result = await axios.post(url, response);
       console.log('Результат проверки:', result.data);
   
@@ -125,7 +125,7 @@ const Home = () => {
     console.log(response);
     setRefresh(value);
     if (send === true) {
-      sendJokeToTelegram(joke);
+      sendJokeToBackend(joke); // Используйте функцию для отправки анекдота на бэкенд
     }
     setSend(true);
   };
